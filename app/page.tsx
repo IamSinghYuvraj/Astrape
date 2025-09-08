@@ -28,6 +28,8 @@ export default function Home() {
   const [sortBy, setSortBy] = useState('newest')
   const { data: session } = useSession()
 
+  const INR_CONVERSION_RATE = 80; // Assuming 1 USD = 80 INR
+
   useEffect(() => {
     fetchProducts()
   }, [])
@@ -48,7 +50,7 @@ export default function Home() {
       
       // Find max price
       const prices = data.map((p: Product) => p.price)
-      setMaxPrice(Math.max(...prices))
+      setMaxPrice(Math.max(...prices) * INR_CONVERSION_RATE)
     } catch (error) {
       console.error('Error fetching products:', error)
       toast.error('Failed to load products')
@@ -77,10 +79,10 @@ export default function Home() {
       )
     }
 
-    // Filter by price range
+    // Filter by price range (convert product price to INR for comparison)
     filtered = filtered.filter(product =>
-      product.price >= filters.priceRange[0] &&
-      product.price <= filters.priceRange[1]
+      (product.price * INR_CONVERSION_RATE) >= filters.priceRange[0] &&
+      (product.price * INR_CONVERSION_RATE) <= filters.priceRange[1]
     )
 
     setFilteredProducts(filtered)

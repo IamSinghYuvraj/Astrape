@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
@@ -23,6 +23,11 @@ export default function FilterSidebar({
 }: FilterSidebarProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice])
+
+  // Add this useEffect hook
+  useEffect(() => {
+    setPriceRange([0, maxPrice]);
+  }, [maxPrice]);
 
   const handleCategoryChange = (category: string, checked: boolean) => {
     const newCategories = checked
@@ -76,8 +81,8 @@ export default function FilterSidebar({
               className="w-full"
             />
             <div className="flex items-center justify-between text-sm text-gray-600">
-              <span>₹{priceRange[0]}</span>
-              <span>₹{priceRange[1]}</span>
+              <span>₹{priceRange[0].toLocaleString('en-IN')}</span>
+              <span>₹{priceRange[1].toLocaleString('en-IN')}</span>
             </div>
           </div>
         </div>
